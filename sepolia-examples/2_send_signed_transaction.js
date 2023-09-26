@@ -1,17 +1,17 @@
 const { ethers } = require("ethers");
-const { provider } = require("../configs/infuraConfig");
+const { sepoliaProvider } = require("../configs/infuraConfig");
 
 const account1 = process.env.WALLET_ADDRESS; // Your account address 1
 const account2 = process.env.WALLET_ADDRESS_2; // Your account address 2
 
 const privateKey1 = process.env.WALLET_PRIVATE; // Private key of account 1
-const wallet = new ethers.Wallet(privateKey1, provider);
+const wallet = new ethers.Wallet(privateKey1, sepoliaProvider);
 
 const amount = "0.025";
 
 const main = async () => {
-    const senderBalanceBefore = await provider.getBalance(account1);
-    const recieverBalanceBefore = await provider.getBalance(account2);
+    const senderBalanceBefore = await sepoliaProvider.getBalance(account1);
+    const recieverBalanceBefore = await sepoliaProvider.getBalance(account2);
 
     console.log(
         `\nSender balance before: ${ethers.utils.formatEther(
@@ -33,8 +33,8 @@ const main = async () => {
     await tx.wait();
     console.log(tx);
 
-    const senderBalanceAfter = await provider.getBalance(account1);
-    const recieverBalanceAfter = await provider.getBalance(account2);
+    const senderBalanceAfter = await sepoliaProvider.getBalance(account1);
+    const recieverBalanceAfter = await sepoliaProvider.getBalance(account2);
 
     console.log(
         `\nSender balance after: ${ethers.utils.formatEther(
