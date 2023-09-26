@@ -1,14 +1,21 @@
 const { ethers } = require("ethers");
+require("dotenv").config();
 
-const INFURA_ID = ''
-const provider = new ethers.providers.JsonRpcProvider(`https://mainnet.infura.io/v3/${INFURA_ID}`)
+const provider_url = process.env.ETH_SEPOLIA_NODE;
+const provider = new ethers.providers.JsonRpcProvider(
+    provider_url
+    // "http://localhost:8545"
+);
 
-const address = '0x73BCEb1Cd57C711feaC4224D062b0F6ff338501e'
+const address = process.env.WALLET_ADDRESS;
 
 const main = async () => {
-    const balance = await provider.getBalance(address)
-    console.log(`\nETH Balance of ${address} --> ${ethers.utils.formatEther(balance)} ETH\n`)
-}
+    const balance = await provider.getBalance(address);
+    console.log(
+        `\nETH Balance of ${address} --> ${ethers.utils.formatEther(
+            balance
+        )} ETH\n`
+    );
+};
 
-main()
-
+main();
