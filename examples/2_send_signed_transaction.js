@@ -1,8 +1,5 @@
 const { ethers } = require("ethers");
-require("dotenv").config();
-
-const provider_url = process.env.ETH_SEPOLIA_NODE;
-const provider = new ethers.providers.JsonRpcProvider(provider_url);
+const { provider } = require("../configs/infuraConfig");
 
 const account1 = process.env.WALLET_ADDRESS; // Your account address 1
 const account2 = process.env.WALLET_ADDRESS_2; // Your account address 2

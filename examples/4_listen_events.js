@@ -14,20 +14,15 @@ const signer = wallet.provider.getSigner(wallet.address);
 const signedContract = contract.connect(signer);
 
 const main = async () => {
-    // call the event emitter function
-    const tx = await signedContract.populateTransaction.emitNumber(3);
-    const txResponse = await wallet.sendTransaction(tx);
+    const block = await provider.getBlockNumber();
 
-    await txResponse.wait();
-    console.log("Transaction hash:", txResponse.hash);
-
-    // // await the event
-    // const transferEvents = await signedContract.queryFilter(
-    //     "NumberEmitted",
-    //     block - 10,
-    //     block
-    // );
-    // console.log(transferEvents);
+    // await the event
+    const transferEvents = await signedContract.queryFilter(
+        "NumberEmitted",
+        block - 1000,
+        block
+    );
+    console.log(transferEvents);
 };
 
 main();
