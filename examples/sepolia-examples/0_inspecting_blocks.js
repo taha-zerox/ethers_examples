@@ -1,5 +1,5 @@
 const { ethers } = require("ethers");
-const { sepoliaProvider } = require("../configs/infuraConfig");
+const { sepoliaProvider } = require("../../configs/APIConfig");
 
 const main = async () => {
     const block = await sepoliaProvider.getBlockNumber();

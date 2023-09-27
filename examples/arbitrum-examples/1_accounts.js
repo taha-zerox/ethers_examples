@@ -1,10 +1,10 @@
 const { ethers } = require("ethers");
-const { sepoliaProvider } = require("../configs/infuraConfig");
+const { arbitrumSepoliaProvider } = require("../../configs/APIConfig");
 
-const address = process.env.WALLET_ADDRESS;
+const address = process.env.ARB_SEP_WALLET_ADDRESS;
 
 const main = async () => {
-    const balance = await sepoliaProvider.getBalance(address);
+    const balance = await arbitrumSepoliaProvider.getBalance(address);
     console.log(
         `\nETH Balance of ${address} --> ${ethers.utils.formatEther(
             balance

@@ -1,8 +1,8 @@
 const { ethers } = require("ethers");
-const { sepoliaProvider, goerliProvider } = require("../configs/infuraConfig");
+const { sepoliaProvider, goerliProvider } = require("../../configs/APIConfig");
 
-const sepoliaContractAbi = require("../build-info/SingleNumber.json");
-const goerliContractAbi = require("../build-info/AppendNumber.json");
+const sepoliaContractAbi = require("../../build-info/SingleNumber.json");
+const goerliContractAbi = require("../../build-info/AppendNumber.json");
 
 const sepoliaContractAddress = "0xda5dc69C28821341a6fbb647c3f1D2d4f1e0f73a";
 const goerliContractAddress = "0xA5bA4eB72d56E378353B56AA482364f642C88620";

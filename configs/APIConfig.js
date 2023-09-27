@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const sepoliaProviderUrl = process.env.ETH_SEPOLIA_NODE;
 const goerliProviderUrl = process.env.ETH_GOERLI_NODE;
+const arbitrumSepoliaProviderUrl = process.env.ARBITRUM_SEPOLIA_NODE;
 
 const sepoliaProvider = new ethers.providers.JsonRpcProvider(
     sepoliaProviderUrl
@@ -11,11 +12,15 @@ const sepoliaProvider = new ethers.providers.JsonRpcProvider(
 
 const goerliProvider = new ethers.providers.JsonRpcProvider(
     goerliProviderUrl
-    // "http://localhost:8546"
+);
+
+const arbitrumSepoliaProvider = new ethers.providers.JsonRpcProvider(
+    arbitrumSepoliaProviderUrl
 );
 
 
 module.exports = {
     sepoliaProvider,
     goerliProvider,
+    arbitrumSepoliaProvider,
 };
