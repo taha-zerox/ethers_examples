@@ -1,15 +1,17 @@
 // ethUtils.js
 const { ethers } = require("ethers");
 
-async function sendEthBetweenAccounts(provider, sender, receiver, privateKey, amount) {
+async function sendEthBetweenAccounts(
+    provider,
+    sender,
+    receiver,
+    privateKey,
+    amount
+) {
     const wallet = new ethers.Wallet(privateKey, provider);
 
-    const senderBalanceBefore = await provider.getBalance(
-        sender
-    );
-    const recieverBalanceBefore = await provider.getBalance(
-        receiver
-    );
+    const senderBalanceBefore = await provider.getBalance(sender);
+    const recieverBalanceBefore = await provider.getBalance(receiver);
 
     // Transaction
     const tx = await wallet.sendTransaction({
@@ -19,12 +21,8 @@ async function sendEthBetweenAccounts(provider, sender, receiver, privateKey, am
 
     await tx.wait();
 
-    const senderBalanceAfter = await provider.getBalance(
-        sender
-    );
-    const recieverBalanceAfter = await provider.getBalance(
-        receiver
-    );
+    const senderBalanceAfter = await provider.getBalance(sender);
+    const recieverBalanceAfter = await provider.getBalance(receiver);
 
     return {
         senderBalanceBefore: ethers.utils.formatEther(senderBalanceBefore),
@@ -35,11 +33,66 @@ async function sendEthBetweenAccounts(provider, sender, receiver, privateKey, am
     };
 }
 
-async function sendContractTransaction(provider, signerAddress, signerPrivateKey, contractABI, contractAddress){
-    
+async function sendContractTransaction(
+    provider,
+    signerPrivateKey,
+    contractABI,
+    contractAddress
+) {
+    const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        provider
+    );
+
+    // sign the contract with the proper signer
+    const wallet = new ethers.Wallet(signerPrivateKey, provider);
+    const signer = wallet.provider.getSigner(wallet.address);
+    const signedContract = contract.connect(signer);
+
+    const tx = await signedContract.populateTransaction.emitNumber(3);
+    const txResponse = await wallet.sendTransaction(tx);
+
+    await txResponse.wait();
+
+    return {
+        txResponse: txResponse,
+    };
+}
+
+async function listenEvents(
+    provider,
+    signerPrivateKey,
+    contractABI,
+    contractAddress,
+    eventName,
+    blockRange = 100
+) {
+    const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        provider
+    );
+
+    // sign the contract with the proper signer
+    const wallet = new ethers.Wallet(signerPrivateKey, provider);
+    const signer = wallet.provider.getSigner(wallet.address);
+    const signedContract = contract.connect(signer);
+
+    const block = await provider.getBlockNumber();
+
+    // await the event
+    const transferEvents = await signedContract.queryFilter(
+        eventName,
+        block - blockRange,
+        block
+    );
+
+    return transferEvents;
 }
 
 module.exports = {
     sendEthBetweenAccounts,
     sendContractTransaction,
+    listenEvents,
 };
