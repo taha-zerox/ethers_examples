@@ -16,7 +16,13 @@ const main = async () => {
         tx,
         senderBalanceAfter,
         recieverBalanceAfter,
-    } = await sendEthBetweenAccounts(sepoliaProvider, sender, receiver, privateKey, amount);
+    } = await sendEthBetweenAccounts(
+        sepoliaProvider,
+        sender,
+        receiver,
+        privateKey,
+        amount
+    );
 
     console.log(`Sender balance before: ${senderBalanceBefore}`);
     console.log(`Receiver balance before: ${recieverBalanceBefore}`);

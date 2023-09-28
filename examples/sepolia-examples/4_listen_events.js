@@ -1,4 +1,3 @@
-const { ethers } = require("ethers");
 const { sepoliaProvider } = require("../../configs/APIConfig");
 const { fetchEvents } = require("../../utils/ethUtils");
 

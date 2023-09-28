@@ -1,59 +1,34 @@
-const { ethers } = require("ethers");
 const { arbitrumSepoliaProvider } = require("../../configs/APIConfig");
+const { sendEthBetweenAccounts } = require("../../utils/ethUtils");
 
-const account1 = process.env.ARB_SEP_WALLET_ADDRESS; // Your account address 1
-const account2 = process.env.WALLET_ADDRESS; // Your account address 2
+const sender = process.env.ARB_SEP_WALLET_ADDRESS; // Your account address 1
+const receiver = process.env.WALLET_ADDRESS; // Your account address 2
 
-const privateKey1 = process.env.ARB_SEP_WALLET_PRIVATE; // Private key of account 1
-const wallet = new ethers.Wallet(privateKey1, arbitrumSepoliaProvider);
+const privateKey = process.env.ARB_SEP_WALLET_PRIVATE; // Private key of account 1
 
 const amount = "0.005";
 
 const main = async () => {
-    const senderBalanceBefore = await arbitrumSepoliaProvider.getBalance(
-        account1
-    );
-    const recieverBalanceBefore = await arbitrumSepoliaProvider.getBalance(
-        account2
-    );
-
-    console.log(
-        `\nSender balance before: ${ethers.utils.formatEther(
-            senderBalanceBefore
-        )}`
-    );
-    console.log(
-        `reciever balance before: ${ethers.utils.formatEther(
-            recieverBalanceBefore
-        )}\n`
+    const {
+        senderBalanceBefore,
+        recieverBalanceBefore,
+        tx,
+        senderBalanceAfter,
+        recieverBalanceAfter,
+    } = await sendEthBetweenAccounts(
+        arbitrumSepoliaProvider,
+        sender,
+        receiver,
+        privateKey,
+        amount
     );
 
-    // transaction
-    const tx = await wallet.sendTransaction({
-        to: account2,
-        value: ethers.utils.parseEther(amount),
-    });
-
-    await tx.wait();
-    console.log(tx);
-
-    const senderBalanceAfter = await arbitrumSepoliaProvider.getBalance(
-        account1
-    );
-    const recieverBalanceAfter = await arbitrumSepoliaProvider.getBalance(
-        account2
-    );
-
-    console.log(
-        `\nSender balance after: ${ethers.utils.formatEther(
-            senderBalanceAfter
-        )}`
-    );
-    console.log(
-        `reciever balance after: ${ethers.utils.formatEther(
-            recieverBalanceAfter
-        )}\n`
-    );
+    console.log(`Sender balance before: ${senderBalanceBefore}`);
+    console.log(`Receiver balance before: ${recieverBalanceBefore}`);
+    console.log("Transaction details:", tx);
+    console.log(`Sender balance after: ${senderBalanceAfter}`);
+    console.log(`Receiver balance after: ${recieverBalanceAfter}`);
 };
 
 main();
+

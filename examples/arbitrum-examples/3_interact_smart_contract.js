@@ -1,17 +1,17 @@
-const { sepoliaProvider } = require("../../configs/APIConfig");
+const { arbitrumSepoliaProvider } = require("../../configs/APIConfig");
 const { sendContractTransaction } = require("../../utils/ethUtils");
 
-const contractAbi = require("../../build-info/SingleNumber.json");
+const contractAbi = require("../../build-info/AppendNumber.json");
 
-const contractAddress = "0xda5dc69C28821341a6fbb647c3f1D2d4f1e0f73a"; // Our simple contract
+const contractAddress = "0x5Ec75f12104d85591768312a992555459b94d0B6"; // Our simple contract
 
 const privateKey = process.env.WALLET_PRIVATE;
 
-const transactionName = "emitNumber";
+const transactionName = "appendSingleNumber";
 
 const main = async () => {
     const { txResponse } = await sendContractTransaction(
-        sepoliaProvider,
+        arbitrumSepoliaProvider,
         privateKey,
         contractAbi,
         contractAddress,
