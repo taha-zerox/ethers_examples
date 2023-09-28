@@ -37,7 +37,8 @@ async function sendContractTransaction(
     provider,
     signerPrivateKey,
     contractABI,
-    contractAddress
+    contractAddress,
+    transactionName
 ) {
     const contract = new ethers.Contract(
         contractAddress,
@@ -50,7 +51,7 @@ async function sendContractTransaction(
     const signer = wallet.provider.getSigner(wallet.address);
     const signedContract = contract.connect(signer);
 
-    const tx = await signedContract.populateTransaction.emitNumber(3);
+    const tx = await signedContract.populateTransaction[transactionName](3);
     const txResponse = await wallet.sendTransaction(tx);
 
     await txResponse.wait();
@@ -60,7 +61,7 @@ async function sendContractTransaction(
     };
 }
 
-async function listenEvents(
+async function fetchEvents(
     provider,
     signerPrivateKey,
     contractABI,
@@ -91,8 +92,33 @@ async function listenEvents(
     return transferEvents;
 }
 
+async function listenEvents(
+    provider,
+    contractABI,
+    contractAddress,
+    eventName,
+    callback
+) {
+    const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        provider
+    );
+
+    // Create an event filter for the event
+    const eventFilter = contract.filters[eventName]();
+
+    // Start listening for events
+    contract.on(eventFilter, async () => {
+        console.log(`New ${eventName} event detected`);
+
+        callback();
+    });
+}
+
 module.exports = {
     sendEthBetweenAccounts,
     sendContractTransaction,
+    fetchEvents,
     listenEvents,
 };

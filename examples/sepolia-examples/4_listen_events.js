@@ -1,6 +1,6 @@
 const { ethers } = require("ethers");
 const { sepoliaProvider } = require("../../configs/APIConfig");
-const { listenEvents } = require("../../utils/ethUtils");
+const { fetchEvents } = require("../../utils/ethUtils");
 
 const contractAbi = require("../../build-info/SingleNumber.json");
 
@@ -11,7 +11,7 @@ const eventName = "NumberEmitted";
 const privateKey = process.env.WALLET_PRIVATE;
 
 const main = async () => {
-    const eventList = await listenEvents(
+    const eventList = await fetchEvents(
         sepoliaProvider,
         privateKey,
         contractAbi,
