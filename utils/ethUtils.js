@@ -67,7 +67,7 @@ async function fetchEvents(
     contractABI,
     contractAddress,
     eventName,
-    blockRange = 100
+    blockRange = 1000000
 ) {
     const contract = new ethers.Contract(
         contractAddress,

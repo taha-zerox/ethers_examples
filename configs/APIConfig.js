@@ -10,14 +10,11 @@ const sepoliaProvider = new ethers.providers.JsonRpcProvider(
     // "http://localhost:8545"
 );
 
-const goerliProvider = new ethers.providers.JsonRpcProvider(
-    goerliProviderUrl
-);
+const goerliProvider = new ethers.providers.JsonRpcProvider(goerliProviderUrl);
 
 const arbitrumSepoliaProvider = new ethers.providers.JsonRpcProvider(
     arbitrumSepoliaProviderUrl
 );
-
 
 module.exports = {
     sepoliaProvider,
